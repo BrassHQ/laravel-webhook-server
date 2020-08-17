@@ -178,13 +178,6 @@ class WebhookCall
         dispatch($this->callWebhookJob);
     }
 
-    public function dispatchNow(): void
-    {
-        $this->prepareForDispatch();
-
-        dispatch_now($this->callWebhookJob);
-    }
-
     protected function prepareForDispatch(): void
     {
         if (! $this->callWebhookJob->webhookUrl) {
