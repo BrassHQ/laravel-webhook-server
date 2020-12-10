@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-webhook-server` will be documented in this file
 
+## 1.11.0 - 2020-11-28
+
+- add support for PHP 8
+
+## 1.10.0 - 2020-10-04
+
+- add `getUuid`
+
 ## 1.9.3 - 2020-09-09
 
 - support Guzzle 7
