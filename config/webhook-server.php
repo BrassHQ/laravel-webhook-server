@@ -3,6 +3,11 @@
 return [
 
     /*
+     *  The queue connection that should be used to send webhook requests.
+     */
+    'connection' => null,
+    
+    /*
      *  The default queue that should be used to send webhook requests.
      */
     'queue' => 'default',

@@ -31,6 +31,7 @@ class WebhookCall
 
         return (new static())
             ->uuid(Str::uuid())
+            ->onConnection($config['connection'])
             ->onQueue($config['queue'])
             ->useHttpVerb($config['http_verb'])
             ->maximumTries($config['tries'])
@@ -69,6 +70,13 @@ class WebhookCall
 
         $this->callWebhookJob->uuid = $uuid;
 
+        return $this;
+    }
+    
+    public function onConnection(?string $connection): self
+    {
+        $this->callWebhookJob->connection = $connection;
+        
         return $this;
     }
 
@@ -126,7 +134,7 @@ class WebhookCall
     public function signUsing(string $signerClass): self
     {
         if (! is_subclass_of($signerClass, Signer::class)) {
-            throw InvalidSigner::doesImplementSigner($signerClass);
+            throw InvalidSigner::doesNotImplementSigner($signerClass);
         }
 
         $this->signer = app($signerClass);
@@ -143,7 +151,7 @@ class WebhookCall
 
     public function withHeaders(array $headers): self
     {
-        $this->headers = $headers;
+        $this->headers = array_merge($this->headers, $headers);
 
         return $this;
     }
@@ -176,11 +184,11 @@ class WebhookCall
         return $this;
     }
 
-    public function dispatch(): void
+    public function dispatch()
     {
         $this->prepareForDispatch();
 
-        dispatch($this->callWebhookJob);
+        return dispatch($this->callWebhookJob);
     }
 
     protected function prepareForDispatch(): void
